@@ -1,0 +1,4 @@
+TRANSMISSIONS = [
+    "Manual",
+    "Automatic"
+]

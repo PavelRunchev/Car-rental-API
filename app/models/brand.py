@@ -7,7 +7,8 @@ class Brand(BaseModel):
 
     name = db.Column( db.String(100), nullable=False, unique=True )
 
-    logo_public_id = db.Column( db.String(255), nullable=True )
+    cars = db.relationship("Car", back_populates="brand")
+    models = db.relationship("Model", back_populates="brand")
 
     def __repr__(self):
         return f"<Brand {self.name}>"

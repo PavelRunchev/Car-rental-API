@@ -7,5 +7,8 @@ class Transmission(BaseModel):
 
     name = db.Column(db.String(50),nullable=False,unique=True)
 
+    cars = db.relationship("Car", back_populates="transmission")
+
     def __repr__(self):
         return f"<Transmission {self.name}>"
+

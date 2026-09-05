@@ -13,3 +13,4 @@ class CarImage(BaseModel):
 
     def __repr__(self):
         return f"<CarImage {self.public_id}>"
+

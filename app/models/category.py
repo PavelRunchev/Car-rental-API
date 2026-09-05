@@ -7,5 +7,7 @@ class Category(BaseModel):
 
     name = db.Column(db.String(50),nullable=False,unique=True)
 
+    cars = db.relationship("Car", back_populates="category")
+
     def __repr__(self):
         return f"<Category {self.name}>"

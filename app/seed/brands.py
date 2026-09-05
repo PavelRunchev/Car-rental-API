@@ -1,0 +1,23 @@
+BRANDS = [
+    "Audi",
+    "BMW",
+    "Citroen",
+    "Dacia",
+    "Fiat",
+    "Ford",
+    "Honda",
+    "Hyundai",
+    "Kia",
+    "Mazda",
+    "Mercedes-Benz",
+    "Nissan",
+    "Opel",
+    "Peugeot",
+    "Renault",
+    "Seat",
+    "Skoda",
+    "Tesla",
+    "Toyota",
+    "Volkswagen",
+    "Volvo"
+]

@@ -13,7 +13,9 @@ class Car(BaseModel):
 
     transmission_id = db.Column(db.UUID(as_uuid=True),db.ForeignKey("transmissions.id"),nullable=False)
 
-    model = db.Column(db.String(100),nullable=False)
+    model_id = db.Column(db.UUID(as_uuid=True),db.ForeignKey("models.id"),nullable=False)
+
+    license_plate = db.Column(db.String(20),nullable=False,unique=True)
 
     year = db.Column(db.Integer,nullable=False)
 
@@ -28,6 +30,15 @@ class Car(BaseModel):
     doors = db.Column(db.Integer,nullable=False)
 
     description = db.Column(db.Text,nullable=True)
+
+    brand = db.relationship("Brand", back_populates="cars")
+    model = db.relationship("Model",back_populates="cars")
+    category = db.relationship("Category", back_populates="cars")
+    fuel_type = db.relationship("FuelType", back_populates="cars")
+    transmission = db.relationship("Transmission", back_populates="cars")
+    images = db.relationship("CarImage",backref="car",lazy=True,cascade="all, delete-orphan")
+
+    reservations = db.relationship("Reservation",back_populates="car")
 
     status = db.Column(db.Enum("Available","Reserved","Maintenance",name="car_status"),nullable=False,default="Available")
 

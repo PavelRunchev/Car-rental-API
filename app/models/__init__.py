@@ -3,4 +3,11 @@ from app.models.category import Category
 from app.models.fuel_type import FuelType
 from app.models.transmission import Transmission
 from app.models.car import Car
-from app.models.cars_image import CarImage
+from app.models.car_image import CarImage
+from app.models.reservation import Reservation
+from app.models.user import User
+from app.models.audit_log import AuditLog
+from app.models.refresh_token import RefreshToken
+from app.models.model import Model
+from app.models.activation_token import ActivationToken
+from app.models.payment import Payment
