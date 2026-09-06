@@ -56,4 +56,11 @@ def create_app():
     def seed():
         seed_database()
 
+
+    @app.route("/")
+    def home():
+        return {"success": True,"message": "Car Rental API is running."}, 200
+
+
     return app
+
