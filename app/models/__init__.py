@@ -11,3 +11,8 @@ from app.models.refresh_token import RefreshToken
 from app.models.model import Model
 from app.models.activation_token import ActivationToken
 from app.models.payment import Payment
+from app.models.contact_message import ContactMessage
+from app.models.support_topic import SupportTopic
+from app.models.support_message import SupportMessage
+
+

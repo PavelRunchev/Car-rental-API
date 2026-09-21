@@ -26,6 +26,8 @@ class User(BaseModel):
 
     activation_tokens = db.relationship("ActivationToken",back_populates="user")
 
+    support_topics = db.relationship("SupportTopic", back_populates="user")
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 

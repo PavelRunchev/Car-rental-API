@@ -618,4 +618,108 @@ def validate_reservation(data: dict[str, Any]) -> dict[str, str]:
 
     return errors
 
+# ==========================
+# Contact Message
+# ==========================
 
+def validate_contact_message(data: dict[str, Any]) -> dict[str, str]:
+    errors: dict[str, str] = {}
+
+    required_fields = ["name", "email", "subject", "message"]
+
+    for field in required_fields:
+        if not data.get(field):
+            errors[field] = "This field is required."
+
+    if errors:
+        return errors
+
+    if not is_valid_name(data["name"]):
+        errors["name"] = f"Name must be between {NAME_MIN_LENGTH} and {NAME_MAX_LENGTH} characters."
+
+    if not is_valid_email(data["email"]):
+        errors["email"] = "Invalid email address."
+
+    if len(data["subject"].strip()) > 150:
+        errors["subject"] = "Subject cannot exceed 150 characters."
+
+    if len(data["message"].strip()) < 10:
+        errors["message"] = "Message must contain at least 10 characters."
+
+    return errors
+
+
+CONTACT_MESSAGE_STATUSES = {"New", "Read", "Replied", "Closed"}
+
+def validate_contact_message_status(data: dict[str, Any]) -> dict[str, str]:
+    errors: dict[str, str] = {}
+
+    if not data.get("status"):
+        errors["status"] = "This field is required."
+        return errors
+
+    if data["status"] not in CONTACT_MESSAGE_STATUSES:
+        errors["status"] = "Invalid contact message status."
+
+    return errors
+
+# ==========================
+# Topic and Support Message
+# ==========================
+
+SUPPORT_TOPIC_STATUSES = { "Open", "Closed", "Blocked" }
+SUPPORT_TOPIC_CATEGORIES = { "Payment", "Reservation", "Car", "Account", "Technical", "Other" }
+
+def validate_support_topic(data: dict[str, Any]) -> dict[str, str]:
+    errors: dict[str, str] = {}
+    required_fields = ["title", "category"]
+
+    for field in required_fields:
+        if not data.get(field):
+            errors[field] = "This field is required."
+
+    if errors:
+        return errors
+
+    title = data["title"].strip()
+    category = data["category"]
+
+    if len(title) < 5:
+        errors["title"] = "Title must contain at least 5 characters."
+    elif len(title) > 150:
+        errors["title"] = "Title cannot exceed 150 characters."
+
+    if category not in SUPPORT_TOPIC_CATEGORIES:
+        errors["category"] = "Invalid support topic category."
+
+    return errors
+
+
+def validate_support_message(data: dict[str, Any]) -> dict[str, str]:
+    errors: dict[str, str] = {}
+
+    if not data.get("message"):
+        errors["message"] = "This field is required."
+        return errors
+
+    message = data["message"].strip()
+
+    if len(message) < 1:
+        errors["message"] = "Message cannot be empty."
+    elif len(message) > 2000:
+        errors["message"] = "Message cannot exceed 2000 characters."
+
+    return errors
+
+
+def validate_support_topic_status(data: dict[str, Any]) -> dict[str, str]:
+    errors: dict[str, str] = {}
+
+    if not data.get("status"):
+        errors["status"] = "This field is required."
+        return errors
+
+    if data["status"] not in SUPPORT_TOPIC_STATUSES:
+        errors["status"] = "Invalid support topic status."
+
+    return errors
