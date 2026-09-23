@@ -5,20 +5,23 @@ from app.extensions import db
 from app.models.audit_log import AuditLog
 
 
-def log_entity_action( action: str, user: User, entity_name: str | None = None,
+def log_entity_action( action: str, user: User | None, entity_name: str | None = None,
     entity_id: str | None = None, old_values: dict | None = None,
     new_values: dict | None = None, status: str = "SUCCESS"
 ) -> None:
 
-    actor: dict[str, str] = {
-        "id": str(user.id),
-        "name": f"{user.first_name} {user.last_name}",
-        "email": user.email,
-        "role": user.role
-    }
+    actor: dict[str, str] | None = None
+
+    if user:
+        actor = {
+            "id": str(user.id),
+            "name": f"{user.first_name} {user.last_name}",
+            "email": user.email,
+            "role": user.role
+        }
 
     audit = AuditLog(
-        user_id=user.id,
+        user_id=user.id if user else None,
         action=action,
         entity_name=entity_name,
         entity_id=entity_id,

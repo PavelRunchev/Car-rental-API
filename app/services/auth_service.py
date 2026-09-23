@@ -54,6 +54,7 @@ def register(data: dict[str, Any]) -> tuple[Response, int]:
 
 
 def login(data: dict[str, Any]) -> tuple[Response, int]:
+
     errors: dict = validate_login(data)
     if errors:
         return error_response(message="Validation failed.", status_code=400, errors=errors)
@@ -62,9 +63,8 @@ def login(data: dict[str, Any]) -> tuple[Response, int]:
     password: str = data["password"]
 
     user: User | None = get_user_by_email(email)
-
     if not user:
-        log_entity_action(action="LOGIN",entity_name="User", user=user,status="FAILED")
+        log_entity_action(action="LOGIN",entity_name="User", user=None, status="FAILED")
         return error_response(message="Invalid email or password.",status_code=401)
 
     if not user.is_active:
