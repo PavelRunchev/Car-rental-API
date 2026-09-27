@@ -28,4 +28,10 @@ def update_password() -> tuple[Response, int]:
     return profile_service.update_password(request.get_json())
 
 
+@profile_bp.route("/avatar", methods=["PUT"])
+@jwt_required()
+def update_avatar() -> tuple[Response, int]:
+    return profile_service.update_avatar(request.files.get("avatar"))
+
+
 

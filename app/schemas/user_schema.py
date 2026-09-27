@@ -9,6 +9,7 @@ def serialize_user(user: User) -> dict[str, Any]:
         "email": user.email,
         "phone": user.phone,
         "role": user.role,
+        "avatar_public_id": user.avatar_public_id,
         "is_active": user.is_active,
         "created_at": user.created_at.isoformat()
     }

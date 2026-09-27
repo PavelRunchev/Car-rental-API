@@ -13,6 +13,9 @@ from app.services.user_service import get_user_by_email
 from app.services.refresh_token_service import delete_user_refresh_tokens
 from app.services.audit_log_service import log_entity_action
 
+
+from app.services.cloudinary_service import get_cloudinary_user_avatar, restore_cloudinary_user_avatar, upload_cloudinary_user_avatar
+
 def get_profile() -> tuple[Response, int]:
     user_id: str = get_jwt_identity()
 
@@ -129,3 +132,45 @@ def update_password(data: dict[str, Any]) -> tuple[Response, int]:
     log_entity_action(action="UPDATE_PASSWORD",user=user,old_values=old_values,new_values=new_values)
 
     return success_response(message="Password updated successfully.")
+
+
+def update_avatar(file) -> tuple[Response, int]:
+    user_id: str = get_jwt_identity()
+
+    user: User | None = get_user_by_id(user_id)
+    if not user:
+        return error_response( message="User not found.", status_code=404 )
+
+    if not file:
+        return error_response( message="Avatar file is required.", status_code=400 )
+
+    old_public_id: str | None = user.avatar_public_id
+    old_secure_url: str | None = None
+    if old_public_id:
+        cloudinary_avatar = get_cloudinary_user_avatar(old_public_id)
+        if not cloudinary_avatar:
+            return error_response( message="Current avatar not found.", status_code=404 )
+
+        old_public_id = str(cloudinary_avatar["public_id"])
+        old_secure_url = str(cloudinary_avatar["secure_url"])
+
+    try:
+        new_public_id: str = upload_cloudinary_user_avatar(file=file, user_id=str(user.id), overwrite=True )
+        user.avatar_public_id = new_public_id
+        commit()
+
+    except Exception:
+        if old_public_id and old_secure_url:
+            try:
+                restore_cloudinary_user_avatar(public_id=old_public_id,secure_url=old_secure_url)
+            except Exception(BaseException):
+                pass
+
+        raise
+
+    old_values: dict[str, Any] = {"avatar_public_id": old_public_id}
+    new_values: dict[str, Any] = {"avatar_public_id": user.avatar_public_id}
+
+    log_entity_action( action="UPDATE_AVATAR", user=user, old_values=old_values, new_values=new_values )
+
+    return success_response( message="Avatar updated successfully.", data=serialize_user(user), status_code=200)

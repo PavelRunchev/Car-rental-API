@@ -18,6 +18,8 @@ class User(BaseModel):
 
     phone = db.Column(db.String(30),nullable=False)
 
+    avatar_public_id = db.Column(db.String(255), nullable=True)
+
     role = db.Column(db.Enum("Admin", "Operator","User",name="user_role"),nullable=False,default="User")
 
     is_active = db.Column(db.Boolean,nullable=False,default=True)

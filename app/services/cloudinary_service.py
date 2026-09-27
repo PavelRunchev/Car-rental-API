@@ -42,3 +42,32 @@ def delete_cloudinary_car_images(public_ids: list[str]) -> None:
 
 def restore_cloudinary_car_image(public_id: str,secure_url: str) -> None:
     cloudinary.uploader.upload(secure_url,public_id=public_id,overwrite=True,invalidate=True,resource_type="image")
+
+
+# ==========================
+# User Avatar
+# ==========================
+def upload_cloudinary_user_avatar(file: FileStorage,user_id: str,overwrite: bool = False) -> str:
+    public_id = f"users/{user_id}/avatar"
+    result: dict[str, Any] = cloudinary.uploader.upload(
+        file, public_id=public_id, overwrite=overwrite, invalidate=overwrite, resource_type="image"
+    )
+
+    return result["public_id"]
+
+
+
+def get_cloudinary_user_avatar(public_id: str) -> dict[str, Any] | None:
+    try:
+        result = cloudinary.api.resource( public_id, resource_type="image", type="upload" )
+        return result
+    except cloudinary.exceptions.NotFound:
+        return None
+
+
+def delete_cloudinary_user_avatar(public_id: str) -> None:
+    cloudinary.uploader.destroy( public_id, resource_type="image", type="upload", invalidate=True )
+
+
+def restore_cloudinary_user_avatar(public_id: str,secure_url: str) -> None:
+    cloudinary.uploader.upload( secure_url, public_id=public_id, overwrite=True, invalidate=True, resource_type="image")
