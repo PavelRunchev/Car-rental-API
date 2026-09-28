@@ -56,9 +56,22 @@ def upload_cloudinary_user_avatar(file: FileStorage,user_id: str,overwrite: bool
     return result["public_id"]
 
 
+def get_cloudinary_user_avatar_url(public_id: str | None) -> str | None:
+    if not public_id:
+        return None
+
+    avatar = get_cloudinary_user_avatar(public_id)
+    if not avatar:
+        return None
+
+    return avatar["secure_url"]
+
 
 def get_cloudinary_user_avatar(public_id: str) -> dict[str, Any] | None:
     try:
+        if not public_id:
+            return None
+
         result = cloudinary.api.resource( public_id, resource_type="image", type="upload" )
         return result
     except cloudinary.exceptions.NotFound:
