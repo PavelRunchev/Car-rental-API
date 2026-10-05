@@ -182,7 +182,7 @@ def logout(data: dict[str, Any]) -> tuple[Response, int]:
     stored_token: RefreshToken | None = find_refresh_token_by_hash(token_hash)
 
     if not stored_token:
-        return error_response(message="Invalid refresh token.",status_code=401)
+        return error_response(message="Logout successful.",status_code=401)
 
     user: User | None = get_user_by_id(stored_token.user_id)
     delete_refresh_token(stored_token)
