@@ -19,6 +19,7 @@ from app.controllers.payment_routes import payment_bp
 from app.controllers.contact_message_routes import contact_bp
 from app.controllers.support_topic_router import support_topic_bp
 from app.controllers.support_message import support_message_bp
+from app.controllers.message_routes import message_bp
 import cloudinary
 import stripe
 
@@ -50,6 +51,7 @@ def create_app():
     app.register_blueprint(contact_bp)
     app.register_blueprint(support_topic_bp)
     app.register_blueprint(support_message_bp)
+    app.register_blueprint(message_bp)
 
     cloudinary.config(
         cloud_name=app.config["CLOUDINARY_CLOUD_NAME"],

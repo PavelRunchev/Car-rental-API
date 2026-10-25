@@ -14,5 +14,7 @@ from app.models.payment import Payment
 from app.models.contact_message import ContactMessage
 from app.models.support_topic import SupportTopic
 from app.models.support_message import SupportMessage
+from app.models.message import Message
+from app.models.user_message import UserMessage
 
 
